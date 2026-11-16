@@ -332,7 +332,7 @@ history :: InterpState a -> DaemonIO (InterpState a, Either T.Text [T.Text])
 history state = do
     msgStrs <- liftIO $ Ghcid.exec (_ghci state) ":history"
     let msgs = T.lines (ParseContext.cleanResponse (T.pack <$> msgStrs))
-    logDebug [i||history| OUT:\n#{T.unlines msgs}|] state
+    -- logDebug [i||history| OUT:\n#{T.unlines msgs}|] state
     case msgs of
         [] -> throwE (GenericError "':history' unexpectedly returned nothing.")
         [oneLine] ->
@@ -388,7 +388,7 @@ exec :: (Monoid a) => T.Text -> InterpState a -> ExceptT DaemonError IO (InterpS
 exec cmd state@InterpState{_ghci} = do
     logDebug ("|exec| CMD: " <> cmd) state
     msgs <- liftIO $ Ghcid.exec _ghci (T.unpack cmd)
-    logDebug [i||exec| OUT:\n#{Util.linesToText msgs}\n|] state
+    -- logDebug [i||exec| OUT:\n#{Util.linesToText msgs}\n|] state
     newState <-
         updateState
             ( -- Only append the command to the history if it has something interesting.
@@ -503,13 +503,13 @@ deleteBreakpointLine loc state =
                         ]
      in case idxMaybe of
             Just num -> execMuted (":delete " <> showT num) state
-            Nothing -> do
+            {- Nothing -> do
                 logDebug
                     ( [i|No breakpoint at '#{show loc}'; |]
                         <> [i|breakpoints are found at #{show (breakpoints state)}|]
                     )
                     state
-                pure state
+                pure state -}
 
 updateBreakList :: InterpState a -> ExceptT DaemonError IO (InterpState a)
 updateBreakList state@InterpState{_ghci} = do

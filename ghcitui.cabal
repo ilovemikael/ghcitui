@@ -111,7 +111,7 @@ library
 library ghcitui-brick
     hs-source-dirs:     lib/ghcitui-brick
     build-depends:      base >= 4.16 && < 5
-                        , brick >= 2.2 && < 2.10
+                        , brick >= 2.2
                         , containers
                         , errors
                         , file-embed ^>= 0.0.15

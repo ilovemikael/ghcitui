@@ -19,7 +19,7 @@ module Ghcitui.Ghcid.ParseContext
 
 import Prelude hiding (lines)
 
-import Control.Applicative ((<|>))
+import Control.Applicative()
 import Control.Error
 import Data.Array ((!))
 import Data.String.Interpolate (i)
@@ -126,7 +126,7 @@ parseSourceRange s
 -}
 eInfoLine :: T.Text -> Either ParseError (T.Text, T.Text)
 eInfoLine "" = Left $ ParseError "Could not find info line in empty string"
-eInfoLine contextText =
+{- eInfoLine contextText =
     note
         (ParseError [i|Could not match info line: '#{showT splits}'|])
         mStopLine
@@ -136,7 +136,7 @@ eInfoLine contextText =
     mStopLineMatchRes = foldr (\n acc -> acc <|> stopReg n) Nothing splits
     -- Match on the "Stopped in ..." line.
     stopReg :: T.Text -> Maybe (MatchResult T.Text)
-    stopReg s = s =~~ ("^[ \t]*Stopped in ([[:alnum:]_.()']+),(.*)" :: T.Text)
+    stopReg s = s =~~ ("^[ \t]*Stopped in ([[:alnum:]_.()']+),(.*)" :: T.Text) -}
 
 parseBreakResponse :: T.Text -> Either T.Text [Loc.ModuleLoc]
 parseBreakResponse t
